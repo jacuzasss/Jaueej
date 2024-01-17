@@ -1,0 +1,26 @@
+{% extends "blogging/base.html" %}
+
+{% block main %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Support Levels</h1>
+</div>
+<div class="container">
+<div class="card-deck mb-3 text-center">
+{% for level in levels %}
+      <div class="card mb-4 shadow-sm" style="min-width: 18rem;">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">{{ level.name }}</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">${{ level.price }} <small class="text-muted">/ mo</small></h1>
+        <p>{{ level.description }}</p>
+        <p><a class="btn btn-primary" href="{{ url_for('main.create_invoice', name=level.name, price=level.price) }}">Subscribe (Bitcoin)</a></p>
+        {%if square %}
+        <p><a class="btn btn-primary" href="{{ url_for('main.credit_card', name=level.name, price=level.price) }}">Subscribe (Fiat)</a></p>
+        {% endif %}
+      </div>
+      </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

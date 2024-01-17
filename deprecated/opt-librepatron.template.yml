@@ -1,0 +1,41 @@
+version: '3'
+services:
+    librepatron:
+        container_name: librepatron
+        image: jvandrew/librepatron:0.6.69
+        expose:
+            - "8006"
+        volumes:
+            - data-volume:/var/lib/db
+            - config-volume:/var/lib/config
+        environment:
+            - SITEURL=https://<host>
+            - VIRTUAL_HOST=<host>
+            - LETSENCRYPT_HOST=<host>
+            - SECRET_KEY_LOCATION=/var/lib/db/key
+            - LETSENCRYPT_EMAIL=<email>
+            - DATABASE_URL=sqlite:////var/lib/db/app.db
+        restart: on-failure
+
+    isso:
+        container_name: isso
+        image: jvandrew/isso:atron.22
+        expose:
+            - "8080"
+        environment:
+            - VIRTUAL_HOST=comments.<host>
+            - LETSENCRYPT_HOST=comments.<host>
+            - LETSENCRYPT_EMAIL=<email>
+        volumes:
+            - data-volume:/var/lib/db
+            - config-volume:/var/lib/config
+        restart: on-failure
+
+volumes:
+    data-volume:
+        driver: local
+    config-volume:
+        driver: local
+
+networks:
+  generated_default:

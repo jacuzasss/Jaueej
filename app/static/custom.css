@@ -1,0 +1,19 @@
+body {
+  padding-top: 115px;
+  padding-left: 5%;
+  padding-right: 5%;
+  max-width: 900px;
+  min-width: 300px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.comments {
+  transform: scale(0.75);
+  min-width: 350px;
+  margin: 0 auto;
+}
+
+#isso-thread h4 {
+  visibility: hidden;
+}

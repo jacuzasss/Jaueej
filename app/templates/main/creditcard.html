@@ -1,0 +1,67 @@
+{% extends 'blogging/base.html' %}
+{% block meta %}
+<meta id="sq" name="application-name" content="LibrePatron"
+                         data-appid="{{ application_id }}"
+                         data-locid="{{ location_id }}"
+/>
+{% endblock meta %}
+{% block extrastyle %}
+    <!-- link to the SqPaymentForm library -->
+    <script type="text/javascript" src="https://js.squareup.com/v2/paymentform">
+    </script>
+
+    <!-- link to the local SqPaymentForm initialization -->
+    <script type="text/javascript" src="static/sqpaymentform-basic.js">
+    </script>
+    <!-- link to the custom styles for SqPaymentForm -->
+    <link rel="stylesheet" type="text/css" href="static/sqpaymentform-basic.css">
+{% endblock extrastyle %}
+{% block message %}
+{% endblock message %}
+{% block main %}
+<div id="form-container"
+   data-appId="{{ application_id }}"
+   data-locId="{{ location_id }}">
+  <div id="sq-ccbox">
+    <!--
+      Be sure to replace the action attribute of the form with the path of
+      the Transaction API charge endpoint URL you want to POST the nonce to
+      (for example, "/process-card")
+    -->
+    <form id="nonce-form" novalidate action="{{ url_for('api.process_square', price=price) }}" method="post">
+      <fieldset>
+        <span class="label">Card Number</span>
+        <div id="sq-card-number"></div>
+
+        <div class="third">
+          <span class="label">Expiration</span>
+          <div id="sq-expiration-date"></div>
+        </div>
+
+        <div class="third">
+          <span class="label">CVV</span>
+          <div id="sq-cvv"></div>
+        </div>
+
+        <div class="third">
+          <span class="label">Postal</span>
+          <div id="sq-postal-code"></div>
+        </div>
+      </fieldset>
+
+      <button id="sq-creditcard" class="button-credit-card" onclick="requestCardNonce(event)">Subscribe for ${{ price }}</button>
+
+      <div id="error"></div>
+
+      <!--
+        After a nonce is generated it will be assigned to this hidden input field.
+      -->
+      <input type="hidden" id="card-nonce" name="nonce">
+    </form>
+  </div> <!-- end #sq-ccbox -->
+
+</div> <!-- end #form-container -->
+{% endblock main %}
+{% block extrajs %}
+{% endblock extrajs %}
+

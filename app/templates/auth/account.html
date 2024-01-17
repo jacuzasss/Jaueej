@@ -1,0 +1,21 @@
+{% extends "blogging/base.html" %}
+
+{% block main %}
+    <h1>Account Information</h1>
+    <p><b>Plan Name:</b> {{ current_user.role }}</p>
+    <p><b>Expiration (UTC):</b> {{ expires }}</p>
+    {% if not square %}
+    <p>Note that if you made a payment today, your full 30 day extension will not be reflected until the blockchain confirms payment.</p>
+    {% else %}
+    <p>Your card on file will be automatically charged on your expiration date.</p>
+    {% endif %}
+    <a href="{{ url_for('main.support') }}" class="btn btn-primary">Make a Payment or Change Plans</a>
+    {% if square %}
+    <a href="{{ url_for('auth.cancel_square') }}" class="btn btn-primary">Cancel Credit Card Billing</a>
+    {% endif %}
+    {% if opt_out %}
+    <a href="{{ url_for('auth.mail_opt') }}" class="btn btn-primary">Opt In to Emails</a>
+    {% else %}
+    <a href="{{ url_for('auth.mail_opt') }}" class="btn btn-primary">Opt Out of Emails</a>
+    {% endif %}
+{% endblock %}

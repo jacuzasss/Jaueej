@@ -1,0 +1,73 @@
+{% extends 'blogging/base.html' %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='simplemde.min.css') }}">
+{% endblock extrastyle %}
+{% block main %}
+<form class="form-horizontal" action="{{url_for('blogging.editor', post_id=post_id or None)}}" method="POST">
+
+    {{ form.hidden_tag() }}
+
+    <fieldset>
+        <!-- Form Name -->
+        {% if form.tags.type != "RadioField" %}
+        <legend>Edit Homepage</legend>
+        {% else %}
+        <legend>Update Editor</legend>
+        {% endif %}
+        <!-- Text input-->
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+            <div>
+                {{form.title(placeholder="Title", id="title", class="form-control", required="" )}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                {{ form.text }}
+                <span class="help-block">
+                    <p>If you enter a fullscreen view, press ESC to return.</p>
+                    <p>Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a></p><br>
+                    {% if config.BLOGGING_ALLOW_FILEUPLOAD %}
+                        <a target="_blank" href="{{ url_for("flask_fileupload.upload") }}">Upload new File</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <!-- Text input-->
+        <div>
+            {% if form.tags.type == "RadioField" %}
+            {% for subfield in form.tags %}
+                <tr>
+                    <td>{{ subfield }}</td>
+                    <td>{{ subfield.label }}</td>
+                    <br>
+                </tr>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <!-- draft input-->
+        <!--div class="form-group">
+            <div class="col-md-offset-2">
+                <label>
+                    {{form.draft(id="draft")}} draft?
+                </label>
+            </div>
+        </div-->
+        <div class="form-group">
+            <div>
+                {{ form.submit(id="submit", class="btn btn-primary") }}
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock main %}
+
+{% block extrajs %}
+    <script src="{{ url_for('static', filename='simplemde.min.js') }}"></script>
+    <script>
+        var simplemde = new SimpleMDE({ element: $("#MyID")[0] });
+    </script>
+{% endblock extrajs %}
